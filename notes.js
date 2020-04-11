@@ -1,17 +1,12 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-const getNotes = () => {
-    const str = 'Your notes...';
-    return str;
-}
-
 const addNote = (title, body) => {
     const notes = loadNotes();
 
     const verify = notes.find(note => note.title === title);
     if (verify) {
-        console.log(chalk.bgRed('Note title taken!'));
+        console.log(chalk.bgRed.black('Note title taken!'));
         return;
     }
     
@@ -21,7 +16,7 @@ const addNote = (title, body) => {
     });
 
     saveNotes(notes);
-    console.log(chalk.bgGreen('New note added!'));
+    console.log(chalk.bgGreen.black('New note added!'));
 }
 
 const removeNote = (title) => {
@@ -30,11 +25,11 @@ const removeNote = (title) => {
     const notesFilter = notes.filter(note => note.title != title);
 
     if (notes.length == notesFilter.length) {
-        console.log(chalk.bgRed('There isnt any note with that title!'));
+        console.log(chalk.bgRed.black('There isnt any note with that title!'));
         return;
     }
     saveNotes(notesFilter);4
-    console.log(chalk.bgGreen('Note removed!'));
+    console.log(chalk.bgGreen.black('Note removed!'));
 
 }
 
@@ -42,6 +37,17 @@ const listNotes = () => {
     const notes = loadNotes();
     console.log(chalk.bgYellow.black('Your Notes:\n'));
     notes.forEach(note => console.log(note.title));
+}
+
+const readNote = (title) => {
+    const notes = loadNotes();
+    const selectedNote = notes.find(note => note.title === title);
+    if(selectedNote) {
+        console.log(chalk.bgYellow.black(selectedNote.title));
+        console.log(selectedNote.body);
+        return;
+    }
+    console.log(chalk.bgRed.black('We cant find a note with that title!'));
 }
 
 const saveNotes = (notes) => {
@@ -60,8 +66,8 @@ const loadNotes = () => {
 }
 
 module.exports = {
-    getNotes,
     addNote,
     removeNote,
-    listNotes
+    listNotes,
+    readNote
 }
